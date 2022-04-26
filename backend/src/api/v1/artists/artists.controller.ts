@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
 import { CreateSongDto } from '../songs/dto/create-song.dto';
 import { ArtistsService } from './artists.service';
 
@@ -19,5 +19,10 @@ export class ArtistsController {
   @Post()
   createSong(@Body() createSongDto: CreateSongDto) {
     this.artistsService.create(createSongDto);
+  }
+
+  @Patch()
+  updateArtist(@Body() createSongDto: CreateSongDto) {
+    this.artistsService.update('f67h56t53l1iu74a40w3', createSongDto);
   }
 }

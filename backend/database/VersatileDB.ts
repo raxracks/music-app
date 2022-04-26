@@ -25,6 +25,8 @@ export class DB {
   private INTERNAL_STRINGIFY: (value: any) => string;
   private INTERNAL_PARSE: (value: string) => any;
   private INTERNAL_RANDOM: () => string;
+  updateOne: (filter: any, replacements: any) => Promise<void>;
+  update: (previous: any, updated: any) => void;
 
   constructor(path: string, options: any = {}) {
     this.path = path;
@@ -50,7 +52,7 @@ export class DB {
         .fill('')
         .map((_, idx) =>
           idx % Math.floor(Math.random() * 5) == 0
-            ? String.fromCharCode(97 + Math.floor(Math.random() * 26))
+            ? String.fromCharCode(65 + Math.floor(Math.random() * 52))
             : Math.floor(Math.random() * 9),
         )
         .join('');
@@ -166,6 +168,25 @@ export class DB {
 
         res(obj);
       });
+    };
+
+    this.updateOne = async function (filter, replacements) {
+      const item = await this.findOne(filter);
+      const newItem = Object.assign({}, item);
+
+      for (const replacement of Object.keys(replacements)) {
+        newItem[replacement] = replacements[replacement];
+      }
+
+      console.log(item);
+      console.log(newItem);
+      this.update(item, newItem);
+    };
+
+    this.update = function (previous, updated) {
+      this.data = this.data
+        .split(this.INTERNAL_STRINGIFY(previous))
+        .join(this.INTERNAL_STRINGIFY(updated));
     };
 
     this.INTERNAL_STRINGIFY = function (value: { [key: string]: any }) {

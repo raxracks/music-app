@@ -16,6 +16,11 @@ export class ArtistsService {
   }
 
   async allSongs(artist: string) {
-    return await songs.find({ artist: { name: artist } });
+    return await songs.find({ artist: { id: artist } });
+  }
+
+  async update(id: string, createArtistDto: CreateArtistDto) {
+    await artists.updateOne({ id }, createArtistDto);
+    artists.commit();
   }
 }
