@@ -1,0 +1,3 @@
+[submodule "backend/database/VersatileDB"]
+	path = backend/database/VersatileDB
+	url = https://github.com/raxracks/VersatileDB
