@@ -1,0 +1,19 @@
+{
+  "entities": {
+    "song": {
+      "key": "id",
+
+      "id": {
+        "type": "string"
+      },
+
+      "name": {
+        "type": "string"
+      },
+
+      "artist": {
+        "type": "ref"
+      }
+    }
+  }
+}

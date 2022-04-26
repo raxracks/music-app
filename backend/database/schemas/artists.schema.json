@@ -1,0 +1,15 @@
+{
+  "entities": {
+    "artist": {
+      "key": "id",
+
+      "id": {
+        "type": "string"
+      },
+
+      "name": {
+        "type": "string"
+      }
+    }
+  }
+}
