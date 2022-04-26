@@ -1,4 +1,4 @@
-import { DB } from 'database/VersatileDB';
+import { DB } from 'database/VersatileDB/VersatileDB';
 import { join } from 'path';
 
 export const songs = new DB(
