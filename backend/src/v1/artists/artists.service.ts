@@ -9,9 +9,7 @@ export class ArtistsService {
   }
 
   async create(createArtistDto: CreateArtistDto) {
-    console.log(createArtistDto);
-
-    console.log(await artists.create('artist', createArtistDto));
+    await artists.create('artist', createArtistDto);
     artists.commit();
   }
 

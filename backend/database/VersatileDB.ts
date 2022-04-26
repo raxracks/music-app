@@ -21,12 +21,12 @@ export class DB {
   find: (filter: any) => Promise<any>;
   findOne: (filter: any) => Promise<any>;
   ref: (filter: any) => Promise<any>;
-
-  private INTERNAL_STRINGIFY: (value: any) => string;
-  private INTERNAL_PARSE: (value: string) => any;
-  private INTERNAL_RANDOM: () => string;
   updateOne: (filter: any, replacements: any) => Promise<void>;
   update: (previous: any, updated: any) => void;
+
+  INTERNAL_STRINGIFY: (value: any) => string;
+  INTERNAL_PARSE: (value: string) => any;
+  INTERNAL_RANDOM: () => string;
 
   constructor(path: string, options: any = {}) {
     this.path = path;
@@ -178,8 +178,6 @@ export class DB {
         newItem[replacement] = replacements[replacement];
       }
 
-      console.log(item);
-      console.log(newItem);
       this.update(item, newItem);
     };
 

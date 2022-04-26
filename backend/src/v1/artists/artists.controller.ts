@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
 import { CreateSongDto } from '../songs/dto/create-song.dto';
 import { ArtistsService } from './artists.service';
 
-@Controller('api/v1/artists')
+@Controller('v1/artists')
 export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
 
@@ -21,8 +21,8 @@ export class ArtistsController {
     this.artistsService.create(createSongDto);
   }
 
-  @Patch()
-  updateArtist(@Body() createSongDto: CreateSongDto) {
-    this.artistsService.update('f67h56t53l1iu74a40w3', createSongDto);
+  @Patch(':id')
+  updateArtist(@Param() params, @Body() createSongDto: CreateSongDto) {
+    this.artistsService.update(params.id, createSongDto);
   }
 }
