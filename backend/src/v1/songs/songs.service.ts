@@ -10,7 +10,13 @@ export class SongsService {
 
   async create(createSongDto: CreateSongDto) {
     createSongDto.artist = await artists.ref({ id: createSongDto.artist });
-    await songs.create('song', createSongDto);
+    const songEntity = await songs.create('song', createSongDto);
     songs.commit();
+
+    return songEntity;
+  }
+
+  async search(query: string) {
+    return await songs.find({ name: query });
   }
 }

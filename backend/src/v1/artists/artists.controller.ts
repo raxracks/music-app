@@ -16,11 +16,16 @@ export class ArtistsController {
     return this.artistsService.allSongs(params.name);
   }
 
-  @Post()
-  createSong(@Body() createSongDto: CreateSongDto) {
-    this.artistsService.create(createSongDto);
+  @Get('search/:query')
+  searchSongs(@Param() params) {
+    return this.artistsService.search(params.query);
   }
 
+  @Post()
+  async createSong(@Body() createSongDto: CreateSongDto) {
+    return await this.artistsService.create(createSongDto);
+  }
+  
   @Patch(':id')
   updateArtist(@Param() params, @Body() createSongDto: CreateSongDto) {
     this.artistsService.update(params.id, createSongDto);

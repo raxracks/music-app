@@ -1,27 +1,45 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useReducer } from "react";
 
 export function AddSong() {
   const [isOpen, setOpen] = useState(false);
-  const [artistList, setArtistList]: any = useState([""]);
+  const [artist, setArtist] = useState("");
+  const [suggestions, setSuggestions]: any = useState([]);
 
-  // handle input change
-  const handleInputChange = (e: any, index: any) => {
-    const { name, value } = e.target;
-    const list: any = [...artistList];
-    list[index] = value;
-    setArtistList(list);
+  let createdName = "";
+
+  const searchArtists = async (value: any) => {
+    if (!value || value === ".") return setSuggestions([]);
+
+    setSuggestions(
+      await (
+        await fetch(
+          `http://localhost:4000/v1/artists/search/${encodeURIComponent(value)}`
+        )
+      ).json()
+    );
   };
 
-  // handle click event of the Remove button
-  const handleRemoveClick = (index: any) => {
-    const list = [...artistList];
-    list.splice(index, 1);
-    setArtistList(list);
+  const createArtist = async () => {
+    const createArtistRes = await fetch("http://localhost:4000/v1/artists", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: artist }),
+    });
+
+    const newArtistJSON = await createArtistRes.json();
+
+    createdName = newArtistJSON.name;
+
+    setArtist(newArtistJSON.name);
+    setSuggestions([]);
   };
 
-  // handle click event of the Add button
-  const handleAddClick = () => {
-    setArtistList([...artistList, ""]);
+  const chooseSuggestion = (event: any) => {
+    setArtist(event.target.innerText);
+    setSuggestions([]);
   };
 
   return (
@@ -41,28 +59,35 @@ export function AddSong() {
           <div className="bottom">
             {<input className="w-full" placeholder="Song Name" />}
 
-            {artistList.map((x: any, i: any) => {
-              return (
-                <Fragment key={i}>
-                  <input
-                    placeholder="Artist"
-                    value={x}
-                    className="w-tthird"
-                    onChange={(e) => handleInputChange(e, i)}
-                  />
-                  {artistList.length - 1 === i && (
-                    <button onClick={handleAddClick}>+</button>
-                  )}
-                  {artistList.length !== 1 && (
-                    <button onClick={() => handleRemoveClick(i)}>-</button>
-                  )}
-                </Fragment>
-              );
-            })}
+            <input
+              placeholder="Artist Name"
+              value={artist}
+              className="w-full"
+              onChange={(event) => {
+                setArtist(event.target.value);
+                searchArtists(event.target.value);
+              }}
+            />
 
-            <button className="active" onClick={() => console.log(artistList)}>
-              Next
-            </button>
+            <ul className="suggestions">
+              {suggestions.length > 0 ? (
+                suggestions.map((suggestion: any, idx: number) => (
+                  <li key={idx} onClick={(event) => chooseSuggestion(event)}>
+                    {suggestion.name}
+                  </li>
+                ))
+              ) : (
+                <></>
+              )}
+
+              {artist.length > 0 && !suggestions.includes(artist) ? (
+                <li onClick={() => createArtist()}>Create "{artist}"</li>
+              ) : (
+                <></>
+              )}
+            </ul>
+
+            <button className="active">Next</button>
             <button onClick={() => setOpen(false)}>Cancel</button>
           </div>
         </div>

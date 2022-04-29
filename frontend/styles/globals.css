@@ -8,3 +8,45 @@ footer {
 a {
   color: white;
 }
+
+.no-suggestions {
+  color: #999;
+  padding: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.suggestions {
+  background-color: #2d2d2d;
+  color: white;
+  border: 1px solid #353535;
+  list-style: none;
+  margin-top: 0px;
+  overflow-y: auto;
+  padding-left: 0;
+  width: 100%;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.suggestions::-webkit-scrollbar {
+  width: 0.2rem;
+  height: 0rem;
+  border-radius: 20px;
+}
+
+.suggestions li {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.suggestion-active,
+.suggestions li:hover {
+  background-color: #2d2d2d;
+  color: white;
+  cursor: pointer;
+}
+
+.suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid rgb(61, 61, 61);
+}

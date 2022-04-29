@@ -9,8 +9,10 @@ export class ArtistsService {
   }
 
   async create(createArtistDto: CreateArtistDto) {
-    await artists.create('artist', createArtistDto);
+    const artistEntity = await artists.create('artist', createArtistDto);
     artists.commit();
+
+    return artistEntity;
   }
 
   async allSongs(artist: string) {
@@ -20,5 +22,9 @@ export class ArtistsService {
   async update(id: string, createArtistDto: CreateArtistDto) {
     await artists.updateOne({ id }, createArtistDto);
     artists.commit();
+  }
+
+  async search(query: string) {
+    return await artists.find({ name: query });
   }
 }

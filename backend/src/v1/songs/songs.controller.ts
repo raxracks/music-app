@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
 import { SongsService } from './songs.service';
 
@@ -11,8 +11,13 @@ export class SongsController {
     return this.songsService.all();
   }
 
+  @Get('search/:query')
+  searchSongs(@Param() params) {
+    return this.songsService.search(params.query);
+  }
+
   @Post()
-  createSong(@Body() createSongDto: CreateSongDto) {
-    this.songsService.create(createSongDto);
+  async createSong(@Body() createSongDto: CreateSongDto) {
+    return await this.songsService.create(createSongDto);
   }
 }
